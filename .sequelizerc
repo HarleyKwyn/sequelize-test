@@ -1,0 +1,10 @@
+const path = require("path");
+
+module.exports = {
+  // sequelize expects these values to be filepaths and errors if they aren't.
+  // see comment in the config file for more information on the configs.
+  config: path.resolve("config.js"),
+  "models-path": path.resolve("models"),
+  "seeders-path": path.resolve("seeders"),
+  "migrations-path": path.resolve("migrations")
+};

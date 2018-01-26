@@ -1,0 +1,33 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    # Links db container to app container.
+    # This will make the db available at db:3306 in the container
+    links:
+      - db
+    volumes:
+      - ".:/var/core/app"
+      # Exclude these from being mounted
+      # or they'll overwrite the assets in the contianer
+      - "/var/core/app/build"
+      - "/var/core/app/node_modules"
+  db:
+    # Note: make sure the MySQL version matches the version defined in RDS
+    # terraform/vpc/templates/app3/rds.tf
+    image: mysql:5.7.19
+    env_file:
+      - .env
+    ports:
+      - "3306"
+    # MySQL configuration overrides to match RDS
+    volumes:
+      - ./db/config/local-my.cnf:/etc/mysql/conf.d/my.cnf
+
